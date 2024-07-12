@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BulkyWeb.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
 <body>
     <header>
@@ -36,13 +37,14 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <partial name="_Notifaction"/>
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer bg-primary text-muted">
-        <div class="text-center" >
-             Made with <i class="bi bi-heart-fill"></i> by <a  href="https://www.linkedin.com/in/azizaskarov/">Aziz Askarov</a>
+        <div class="text-center text-bg-primary" >
+            Made with <i class="bi bi-heart-fill"></i> by <a class="link-underline" target="_blank" href="https://www.linkedin.com/in/azizaskarov/">Aziz Askarov</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
