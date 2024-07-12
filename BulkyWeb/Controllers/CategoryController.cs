@@ -1,20 +1,21 @@
-﻿using BulkyWeb.Data;
-using BulkyWeb.Models;
+﻿using Bulky.DataAccess.Data;
+using Bulky.DataAccess.IRepositories;
+using Bulky.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers;
 public class CategoryController : Controller
 {
-    private readonly AppDbContext dbContext;
+    private readonly ICategoryRepository categoryRepository;
 
-    public CategoryController(AppDbContext dbContext)
+    public CategoryController(ICategoryRepository categoryRepository)
     {
-        this.dbContext = dbContext;
+        this.categoryRepository = categoryRepository;
     }
 
     public IActionResult Index()
     {
-        var categories = dbContext.Categories.ToList();
+        var categories = categoryRepository.GetAll().ToList();
         return View(categories);
     }
 
@@ -31,8 +32,8 @@ public class CategoryController : Controller
         }
         if (ModelState.IsValid)
         {
-            dbContext.Categories.Add(category);
-            dbContext.SaveChanges();
+            categoryRepository.Add(category);
+            categoryRepository.Save();
             TempData["success"] = "Category created successfully";
             return RedirectToAction("Index");
         }
@@ -46,7 +47,7 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category? category = dbContext.Categories.Find(id);
+        Category? category = categoryRepository.Get(c => c.Id == id);
         if (category == null)
         {
             return NotFound();
@@ -60,8 +61,8 @@ public class CategoryController : Controller
     {
         if (ModelState.IsValid)
         {
-            dbContext.Categories.Update(category);
-            dbContext.SaveChanges();
+            categoryRepository.Update(category);
+            categoryRepository.Save();
             TempData["success"] = "Category updated successfully";
             return RedirectToAction("Index");
         }
@@ -75,7 +76,7 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category? category = dbContext.Categories.Find(id);
+        Category? category = categoryRepository.Get(c => c.Id == id);
         if (category == null)
         {
             return NotFound();
@@ -87,14 +88,14 @@ public class CategoryController : Controller
     [HttpPost, ActionName("Delete")]
     public IActionResult DeletePost(int? id)
     {
-        Category? category = dbContext.Categories.Find(id);
+        Category? category = categoryRepository.Get(c => c.Id == id);
         if (category == null)
         {
             return NotFound();
         }
 
-        dbContext.Categories.Remove(category);
-        dbContext.SaveChanges();
+        categoryRepository.Remove(category);
+        categoryRepository.Save();
         TempData["success"] = "Category deleted successfully";
 
         return RedirectToAction("Index");
